@@ -9,6 +9,21 @@ eureka:
       default-zone: http://localhost:8761/eureka
   instance:
     hostname: localhost
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+
+hystrix:
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+
 
 spring:
   cloud:
@@ -21,11 +36,32 @@ spring:
           uri: lb://user-service
           predicates:
             - Path=/api/v1/users/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: user-service
+                fallbackuri: forward:/userServiceFallBack
         - id: car-service
           uri: lb://car-service
           predicates:
             - Path=/api/v1/cars/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: car-service
+                fallbackuri: forward:/carServiceFallBack
         - id: laptop-service
           uri: lb://laptop-service
           predicates:
             - Path=/api/v1/lapTops/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: laptop-service
+                fallbackuri: forward:/laptopServiceFallBack
+                
+                
+                
+                
+                
+                
