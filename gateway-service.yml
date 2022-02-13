@@ -58,7 +58,7 @@ spring:
             - name: CircuitBreaker
               args:
                 name: laptop-service
-                fallbackuri: forward:/laptopServiceFallBack
+                fallbackuri: forward:/lapTopServiceFallBack
                 
                 
                 
